@@ -1,0 +1,148 @@
+require('competitest').setup {
+    local_config_file_name = ".competitest.lua", -- configuration file name, local to folders
+
+    floating_border = "rounded",
+    floating_border_highlight = "FloatBorder",
+    picker_ui = {
+        width = 0.2, -- from 0 to 1
+        height = 0.3, -- from 0 to 1
+        mappings = {
+            focus_next = { "j", "<down>", "<Tab>" },
+            focus_prev = { "k", "<up>", "<S-Tab>" },
+            close = { "<esc>", "<C-c>", "q", "Q" },
+            submit = { "<cr>" },
+        },
+    },
+    editor_ui = { -- user interface used by CompetiTestAdd and CompetiTestEdit
+        popup_width = 0.4, -- from 0 to 0.5, because there are two popups
+        popup_height = 0.6, -- from 0 to 1
+        show_nu = true, -- show line number
+        show_rnu = false, -- show relative line number
+        normal_mode_mappings = {
+            switch_window = { "<C-h>", "<C-l>", "<C-i>" },
+            save_and_close = "<C-s>",
+            cancel = { "q", "Q" },
+        },
+        insert_mode_mappings = {
+            switch_window = { "<C-h>", "<C-l>", "<C-i>" },
+            save_and_close = "<C-s>",
+            cancel = "<C-q>",
+        },
+    },
+    runner_ui = { -- user interface used by CompetiTestRun
+        interface = "popup", -- interface type, can be 'popup' or 'split'
+        selector_show_nu = false, -- show line number in testcase selector window
+        selector_show_rnu = false, -- show relative line number in testcase selector window
+        show_nu = true, -- show line number in details popups
+        show_rnu = false, -- show relative line number in details popups
+        mappings = {
+            run_again = "<leader>tr",
+            run_all_again = "<C-r>",
+            kill = "K",
+            kill_all = "<C-k>",
+            view_input = { "i", "I" },
+            view_output = { "a", "A" },
+            view_stdout = { "o", "O" },
+            view_stderr = { "e", "E" },
+            toggle_diff = { "d", "D" },
+            close = { "q", "Q" },
+        },
+        viewer = { -- viewer window, to view in detail a stream (input, expected output, stdout or stderr)
+            width = 0.5, -- from 0 to 1
+            height = 0.5, -- from 0 to 1
+            show_nu = true, -- show line number
+            show_rnu = false, -- show relative line number
+            close_mappings = { "q", "Q" },
+        },
+    },
+    popup_ui = {
+        total_width = 0.8, -- from 0 to 1, total width of popup ui
+        total_height = 0.8, -- from 0 to 1, total height of popup ui
+        layout = {
+            { 3, "tc" },
+            { 4, {
+                { 1, "so" },
+                { 1, "si" },
+            } },
+            { 4, {
+                { 1, "eo" },
+                { 1, "se" },
+            } },
+        },
+    },
+    split_ui = {
+        position = "right", -- top, right, left, bottom
+        relative_to_editor = true, -- open split relative to editor or to local window
+        total_width = 0.3, -- from 0 to 1, total width of vertical split
+        vertical_layout = {
+            { 1, "tc" },
+            { 1, {
+                { 1, "so" },
+                { 1, "eo" },
+            } },
+            { 1, {
+                { 1, "si" },
+                { 1, "se" },
+            } },
+        },
+        total_height = 0.4, -- from 0 to 1, total height of horizontal split
+        horizontal_layout = {
+            { 2, "tc" },
+            { 3, {
+                { 1, "so" },
+                { 1, "si" },
+            } },
+            { 3, {
+                { 1, "eo" },
+                { 1, "se" },
+            } },
+        },
+    },
+
+    save_current_file = true,
+    save_all_files = false,
+    compile_directory = ".", -- working directory of compile_command, relatively to current file's path
+    compile_command = {
+        c = { exec = "gcc", args = { "-Wall", "$(FNAME)", "-o", "$(FNOEXT)" } },
+        cpp = { exec = "g++", args = { "-Wall", "$(FNAME)", "-o", "$(FNOEXT)" } },
+        rust = { exec = "rustc", args = { "$(FNAME)" } },
+        java = { exec = "javac", args = { "$(FNAME)" } },
+    },
+    running_directory = ".", -- working directory of run_command, relatively to current file's path
+    run_command = {
+        c = { exec = "./$(FNOEXT)" },
+        cpp = { exec = "./$(FNOEXT)" },
+        rust = { exec = "./$(FNOEXT)" },
+        python = { exec = "python", args = { "$(FNAME)" } },
+        java = { exec = "java", args = { "$(FNOEXT)" } },
+    },
+    multiple_testing = -1, -- how many testcases to run at the same time. Set it to 0 to run all them together, -1 to use amount of available parallelism, or any positive number to run how many testcases you want
+    maximum_time = 5000, -- maximum time (in milliseconds) given to a process. If it's excedeed process will be killed
+    output_compare_method = "squish", -- "exact", "squish" or custom function returning true if comparison is valid
+    view_output_diff = false, -- view diff between standard output and expected output in their respective windows
+
+    testcases_use_single_file = false,
+    testcases_auto_detect_storage = true, -- if true auto detect storage method (single or multiple files). If both are present use the one specified in testcases_use_single_file
+    testcases_single_file_format = "$(FNOEXT).testcases",
+    testcases_input_file_format = "$(FNOEXT)_input$(TCNUM).txt",
+    testcases_output_file_format = "$(FNOEXT)_output$(TCNUM).txt",
+    testcases_directory = ".", -- where testcases are located, relatively to current file's path
+
+    companion_port = 27121, -- competitive companion port
+    receive_print_message = true,
+    template_file = false,
+    evaluate_template_modifiers = false,
+    date_format = "%c",
+    received_files_extension = "java",
+    received_problems_path = "$(CWD)/$(JAVA_TASK_CLASS).$(FEXT)", -- where to store received problems, string or function
+    received_problems_prompt_path = true,
+    received_contests_directory = "$(CWD)", -- root directory for received contests
+    received_contests_problems_path = "$(JAVA_TASK_CLASS).$(FEXT)", -- problems relative path from contest root
+    received_contests_prompt_directory = true,
+    received_contests_prompt_extension = true,
+    open_received_problems = true,
+    open_received_contests = true,
+    replace_received_testcases = false,
+
+}
+
