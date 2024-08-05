@@ -1,2 +1,2 @@
 # neovim-setup
-Add these files to .config
+Add these files to .config/nvim
