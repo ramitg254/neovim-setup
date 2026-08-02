@@ -22,3 +22,5 @@ Neovim configuration with Lazy plugin manager.
    cp -r . ~/.config/nvim/
    rm -f ~/.config/nvim/README.md
    ```
+
+Note: language server binaries which interact with lsp plugin needs to be installed via mason plugin
