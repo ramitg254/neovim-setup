@@ -72,6 +72,14 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   end,
 })
 
+-- Keymaps for terminal
+-- Open terminal in a new tab and immediately enter Insert mode
+vim.keymap.set('n', '<leader>tt', '<cmd>tabnew | terminal<CR>i', { desc = 'Open terminal in new tab' })
+-- Navigate between tabs
+vim.keymap.set('n', 'tn', '<cmd>tabnext<CR>', { desc = 'Next tab' })
+vim.keymap.set('n', 'tp', '<cmd>tabprevious<CR>', { desc = 'Previous tab' })
+vim.keymap.set('n', 'tx', '<cmd>tabclose<CR>', { desc = 'Close tab' })
+
 -- Keymaps to copy file paths to clipboard
 
 -- 1. Copy Relative Path (e.g., lua/plugins/lsp.lua)
@@ -105,6 +113,21 @@ vim.api.nvim_create_user_command('GitBlameLine', function()
   local filename = vim.api.nvim_buf_get_name(0)
   print(vim.system({ 'git', 'blame', '-L', line_number .. ',+1', filename }):wait().stdout)
 end, { desc = 'Print the git blame for the current line' })
+
+-- netrw settings
+vim.g.netrw_winsize = 20  -- Set width as a percentage
+vim.g.netrw_liststyle = 3 -- Tree view layout
+vim.g.netrw_fastbrowse = 0 -- Disable netrw's directory caching so it always reads live state from disk
+vim.g.netrw_keepdir = 0  -- Sync current directory with netrw browsing path
+-- Automatically refresh netrw buffers whenever they gain focus
+vim.api.nvim_create_autocmd("BufEnter", {
+  pattern = "*",
+  callback = function()
+    if vim.bo.filetype == "netrw" then
+      vim.cmd("checktime")
+    end
+  end,
+})
 
 -- Quick FZF-Lua Keymaps
 vim.keymap.set('n', '<leader>ff', '<cmd>FzfLua files<CR>', { desc = 'FZF Find Files' })
