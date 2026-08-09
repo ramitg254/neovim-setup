@@ -45,15 +45,11 @@ vim.o.confirm = true
 -- Use <Esc> to exit terminal mode
 vim.keymap.set('t', '<Esc>', '<C-\\><C-n>')
 
--- Map <A-j>, <A-k>, <A-h>, <A-l> to navigate between windows in any modes
-vim.keymap.set({ 't', 'i' }, '<A-h>', '<C-\\><C-n><C-w>h')
-vim.keymap.set({ 't', 'i' }, '<A-j>', '<C-\\><C-n><C-w>j')
-vim.keymap.set({ 't', 'i' }, '<A-k>', '<C-\\><C-n><C-w>k')
-vim.keymap.set({ 't', 'i' }, '<A-l>', '<C-\\><C-n><C-w>l')
-vim.keymap.set({ 'n' }, '<A-h>', '<C-w>h')
-vim.keymap.set({ 'n' }, '<A-j>', '<C-w>j')
-vim.keymap.set({ 'n' }, '<A-k>', '<C-w>k')
-vim.keymap.set({ 'n' }, '<A-l>', '<C-w>l')
+-- Window navigation 
+vim.keymap.set('n', '<leader>wh', '<C-w>h', { desc = 'Window left' })
+vim.keymap.set('n', '<leader>wj', '<C-w>j', { desc = 'Window down' })
+vim.keymap.set('n', '<leader>wk', '<C-w>k', { desc = 'Window up' })
+vim.keymap.set('n', '<leader>wl', '<C-w>l', { desc = 'Window right' })
 
 -- Tmux-style splits using Leader key
 vim.keymap.set('n', '<leader>%', ':vsplit<CR>', { desc = 'Split window vertically (tmux-style)' })
@@ -82,7 +78,7 @@ vim.keymap.set('n', 'tx', '<cmd>tabclose<CR>', { desc = 'Close tab' })
 
 -- Keymaps to copy file paths to clipboard
 
--- 1. Copy Relative Path (e.g., lua/plugins/lsp.lua)
+-- 1. Copy path relative to current working directory
 vim.keymap.set("n", "<leader>cp", function()
   local path = vim.fn.expand("%")
   vim.fn.setreg("+", path)
